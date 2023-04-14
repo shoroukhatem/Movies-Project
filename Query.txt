@@ -1,0 +1,42 @@
+1. CREATE DATABASE MyCinema;
+2. CREATE TABLE thecamp_cinema (
+ Id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     movie_name varchar(50) NOT NULL,
+    movie_length float(10,2) NOT NULL,
+    movie_director varchar(25) NOT NULL
+)
+3. CREATE TABLE thecamp_movies_ratings(
+ 	Id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    movie_id int(10) unsigned NOT NULL,
+    CONSTRAINT movie_id FOREIGN KEY (movie_id) REFERENCES thecamp_cinema(Id),
+    movie_review varchar(255) NOT NULL,
+    Date TIMESTAMP NOT NULL
+);
+
+4. CREATE TABLE thecamp_movies_actors(
+ 	Id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    movie_idd int(10) unsigned NOT NULL,
+    CONSTRAINT movie_idd FOREIGN KEY (movie_idd) REFERENCES thecamp_cinema(Id),
+    actor_name varchar(60) NOT NULL,
+    actor_salary int(15) NOT NULL
+);
+
+5. SELECT c.* , r.movie_review,r.Date
+FROM thecamp_cinema AS c
+INNER JOIN thecamp_movies_ratings AS r
+ON c.Id = r.movie_id;
+
+6. SELECT c.* , a.actor_name,a.actor_salary
+FROM thecamp_cinema AS c
+INNER JOIN thecamp_movies_actors AS a
+ON c.Id = a.movie_idd;
+
+7. SELECT thecamp_cinema.Id,thecamp_cinema.movie_name, COUNT(thecamp_movies_ratings.movie_review) AS Total
+FROM thecamp_cinema 
+LEFT JOIN thecamp_movies_ratings ON thecamp_cinema.Id = thecamp_movies_ratings.movie_id
+GROUP BY thecamp_cinema.Id,thecamp_cinema.movie_name
+
+8. SELECT thecamp_cinema.Id,thecamp_cinema.movie_name, AVG(thecamp_movies_actors.actor_salary) AS AVG
+FROM thecamp_cinema 
+LEFT JOIN thecamp_movies_actors ON thecamp_cinema.Id = thecamp_movies_actors.movie_idd
+GROUP BY thecamp_cinema.Id,thecamp_cinema.movie_name
